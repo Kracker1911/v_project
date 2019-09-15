@@ -1,4 +1,4 @@
-package top.wwt.receive.exception;
+package top.kracker1911.vproject.exception;
 
 public class AesException extends Exception {
 
