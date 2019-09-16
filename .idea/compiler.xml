@@ -6,14 +6,16 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="receiveTest" />
         <module name="v_project" />
+        <module name="vproject" />
+        <module name="receiveTest" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="v_project" options="-parameters" />
+      <module name="vproject" options="-parameters" />
     </option>
   </component>
 </project>
