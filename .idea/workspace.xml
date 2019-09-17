@@ -2,9 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6b48e9a8-1e2f-4d6b-bab3-f24d0549b33d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/test/controller/ReceiveTestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/test/controller/ReceiveTestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin/controller/WeixinController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin/controller/WeixinController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/util/WeixinUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/util/WeixinUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -24,12 +27,7 @@
     <option name="HIDDEN_KINDS">
       <set />
     </option>
-    <expand>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="root@localhost" type="feb32156:DbDataSourceImpl" />
-      </path>
-    </expand>
+    <expand />
     <select />
   </component>
   <component name="DefaultGradleProjectSettings">
@@ -74,6 +72,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
+    <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="database.main" />
   </component>
   <component name="RecentsManager">
@@ -96,14 +95,17 @@
   </component>
   <component name="RunManager">
     <configuration name="Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <module name="receiveTest" />
+      <module name="vproject" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.skyable.receive.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.skyable.receive.Application" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="top.kracker1911.vproject.Application" />
+      <option name="DEBUG_MODE" value="true" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="UPDATE_ACTION_UPDATE_POLICY" value="UpdateClassesAndResources" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -141,8 +143,17 @@
       <workItem from="1568393601116" duration="368000" />
       <workItem from="1568394000448" duration="49000" />
       <workItem from="1568535955518" duration="12024000" />
-      <workItem from="1568617496314" duration="3138000" />
+      <workItem from="1568617496314" duration="3294000" />
+      <workItem from="1568682163220" duration="7056000" />
     </task>
+    <task id="LOCAL-00001" summary="tiny modify">
+      <created>1568630930892</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1568630930892</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -160,6 +171,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="tiny modify" />
+    <option name="LAST_COMMIT_MESSAGE" value="tiny modify" />
   </component>
   <component name="masterDetails">
     <states>

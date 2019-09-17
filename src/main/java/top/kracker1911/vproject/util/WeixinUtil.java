@@ -36,8 +36,8 @@ public class WeixinUtil {
     private static Charset CHARSET = Charset.forName("UTF-8");
 
     //改变公众号时需配置的变量
-    private static final String AppId = "wx218af82ca36f72ff";
-    private static final String AppSecret = "fd59f0735ed70dfea17b145d8004e795";
+    private static final String AppId = "wxbdce3ed2248a2789";
+    private static final String AppSecret = "ff38bf6b19d3a54125f4ad26eb2de159";
     private static final String Token = "a3af8263be2142228a61c1013b39e9f7";
     private static final String AesKeyStr = "hu6j77iyAkAx1D2Q9Dl2pNEXMqc9f9ToFHfER0auSZk";
 

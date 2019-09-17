@@ -6,14 +6,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
 @Controller
-@RequestMapping("/rcv_test")
 public class ReceiveTestController {
 
     @ResponseBody
-    @RequestMapping(value = "/query", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+    @RequestMapping(value = "/rcv_test/query", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
     public String a_query(@RequestBody String payLoad, HttpServletRequest request){
         System.out.println("==================" + new Date().toString() + "==================" + request.getRequestURI());
         System.out.println(payLoad);
@@ -39,7 +39,7 @@ public class ReceiveTestController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/profile", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+    @RequestMapping(value = "/rcv_test/profile", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
     public String b_profile(@RequestBody String payLoad, HttpServletRequest request){
         System.out.println("==================" + new Date().toString() + "==================" + request.getRequestURI());
         System.out.println(payLoad);
@@ -51,7 +51,7 @@ public class ReceiveTestController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/pushNext", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
+    @RequestMapping(value = "/rcv_test/pushNext", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
     public String c_pushNext(@RequestBody String payLoad, HttpServletRequest request){
         System.out.println("==================" + new Date().toString() + "==================" + request.getRequestURI());
         System.out.println(payLoad);
@@ -108,5 +108,12 @@ public class ReceiveTestController {
                 System.out.println(ppn + ": " + payload.get(ppn).toString());
             }
         }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/status", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
+    public String status(HttpServletRequest request, HttpServletResponse response){
+        System.out.println("status checked time: " + new Date().toString());
+        return "";
     }
 }

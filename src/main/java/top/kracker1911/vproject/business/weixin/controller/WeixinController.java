@@ -179,7 +179,7 @@ public class WeixinController {
      * @return
      */
     @ResponseBody
-    @GetMapping(value = "/wx/getMedias")
+//    @GetMapping(value = "/wx/getMedias")
     public String getMPMediaList(@RequestParam Map<String, String> params){
         String appId = params.get("appId");
         String appSecret = params.get("appSecret");
