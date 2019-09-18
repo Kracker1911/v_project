@@ -2,13 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6b48e9a8-1e2f-4d6b-bab3-f24d0549b33d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/test/controller/ReceiveTestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/test/controller/ReceiveTestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin/controller/WeixinController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin/controller/WeixinController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/util/WeixinUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/util/WeixinUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -57,6 +53,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="DatabaseDriversLRU" value="mysql" />
+    <property name="ExpandSpringBootJavaOptionsPanel" value="true" />
     <property name="RequestMappingsPanelOrder0" value="0" />
     <property name="RequestMappingsPanelOrder1" value="1" />
     <property name="RequestMappingsPanelOrder2" value="2" />
@@ -95,7 +92,7 @@
   </component>
   <component name="RunManager">
     <configuration name="Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <module name="vproject" />
+      <module name="v_project" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.skyable.receive.*" />
@@ -145,6 +142,7 @@
       <workItem from="1568535955518" duration="12024000" />
       <workItem from="1568617496314" duration="3294000" />
       <workItem from="1568682163220" duration="7056000" />
+      <workItem from="1568813113477" duration="3254000" />
     </task>
     <task id="LOCAL-00001" summary="tiny modify">
       <created>1568630930892</created>
