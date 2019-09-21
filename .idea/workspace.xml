@@ -2,15 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6b48e9a8-1e2f-4d6b-bab3-f24d0549b33d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin_message/entity/WeixinMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/lib.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/doc/weixin_user_weixin_message.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin_message/dao/WeixinMessageMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin_message/dao/WeixinMessageMapper.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin_message/entity/WeixinMessageExample.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin_user/dao/WeixinUserMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin_user/dao/WeixinUserMapper.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin_user/entity/WeixinUser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin_user/entity/WeixinUserExample.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/log4j.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin/entity/WeixinMessage.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/config/MyBatisConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/config/MyBatisConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/generatorConfig.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/generatorConfig.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -81,6 +82,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/doc" />
       <recent name="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin_user/dao" />
       <recent name="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin_message/dao" />
     </key>
@@ -102,7 +104,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.Application">
+  <component name="RunManager" selected="Maven.vproject [clean]">
     <configuration name="vproject [clean]" type="MavenRunConfiguration" factoryName="Maven" temporary="true">
       <MavenSettings>
         <option name="myGeneralSettings" />
@@ -176,8 +178,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Spring Boot.Application" />
         <item itemvalue="Maven.vproject [clean]" />
+        <item itemvalue="Spring Boot.Application" />
         <item itemvalue="Maven.vproject [mybatis-generator:generate]" />
       </list>
     </recent_temporary>
@@ -214,7 +216,7 @@
       <workItem from="1568813113477" duration="3445000" />
       <workItem from="1568899931317" duration="4751000" />
       <workItem from="1568904784327" duration="5018000" />
-      <workItem from="1569029491938" duration="7492000" />
+      <workItem from="1569029491938" duration="8266000" />
     </task>
     <task id="LOCAL-00001" summary="tiny modify">
       <created>1568630930892</created>
@@ -230,7 +232,14 @@
       <option name="project" value="LOCAL" />
       <updated>1568821416188</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="modify mybatis-spring form 2.0.1 to 2.0.0 to avoid bug, remove log4j replaced by slf4j">
+      <created>1569041311210</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1569041311210</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -252,6 +261,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="tiny modify" />
     <MESSAGE value="add mbg in pom" />
-    <option name="LAST_COMMIT_MESSAGE" value="add mbg in pom" />
+    <MESSAGE value="modify mybatis-spring form 2.0.1 to 2.0.0 to avoid bug, remove log4j replaced by slf4j, change mapper files location" />
+    <MESSAGE value="modify mybatis-spring form 2.0.1 to 2.0.0 to avoid bug, remove log4j replaced by slf4j" />
+    <option name="LAST_COMMIT_MESSAGE" value="modify mybatis-spring form 2.0.1 to 2.0.0 to avoid bug, remove log4j replaced by slf4j" />
   </component>
 </project>
