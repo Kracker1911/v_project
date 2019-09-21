@@ -25,4 +25,4 @@ spring:
     poolPreparedStatements: true
     maxOpenPreparedStatements: 20
 mybatis:
-  mapperLocations: classpath:resources/mapper/*.xml  #指定*Mapper.xml的位置
+  mapperLocations: classpath:top/kracker1911/vproject/business/*/dao/*.xml  #指定*Mapper.xml的位置

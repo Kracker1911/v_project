@@ -2,13 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6b48e9a8-1e2f-4d6b-bab3-f24d0549b33d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/lib.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/config/MyBatisConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/config/MyBatisMapperScanConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/generatorConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin_message/entity/WeixinMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/lib.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin/entity/WeixinMessage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/config/MyBatisConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/config/MyBatisConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/generatorConfig.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/generatorConfig.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -78,6 +80,10 @@
     <property name="settings.editor.selected.configurable" value="MavenSettings" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin_user/dao" />
+      <recent name="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin_message/dao" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/lib" />
       <recent name="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/util" />
@@ -96,8 +102,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Maven.vproject [clean:clean]">
-    <configuration name="vproject [clean:clean]" type="MavenRunConfiguration" factoryName="Maven" temporary="true">
+  <component name="RunManager" selected="Spring Boot.Application">
+    <configuration name="vproject [clean]" type="MavenRunConfiguration" factoryName="Maven" temporary="true">
       <MavenSettings>
         <option name="myGeneralSettings" />
         <option name="myRunnerSettings" />
@@ -108,7 +114,32 @@
             </option>
             <option name="goals">
               <list>
-                <option value="clean:clean" />
+                <option value="clean" />
+              </list>
+            </option>
+            <option name="pomFileName" value="pom.xml" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
+    <configuration name="vproject [mybatis-generator:generate]" type="MavenRunConfiguration" factoryName="Maven" temporary="true">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="mybatis-generator:generate" />
               </list>
             </option>
             <option name="pomFileName" value="pom.xml" />
@@ -123,7 +154,7 @@
       <method v="2" />
     </configuration>
     <configuration name="Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <module name="v_project" />
+      <module name="vproject" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.skyable.receive.*" />
@@ -139,13 +170,15 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Maven.vproject [clean]" />
       <item itemvalue="Spring Boot.Application" />
-      <item itemvalue="Maven.vproject [clean:clean]" />
+      <item itemvalue="Maven.vproject [mybatis-generator:generate]" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Maven.vproject [clean:clean]" />
         <item itemvalue="Spring Boot.Application" />
+        <item itemvalue="Maven.vproject [clean]" />
+        <item itemvalue="Maven.vproject [mybatis-generator:generate]" />
       </list>
     </recent_temporary>
   </component>
@@ -181,6 +214,7 @@
       <workItem from="1568813113477" duration="3445000" />
       <workItem from="1568899931317" duration="4751000" />
       <workItem from="1568904784327" duration="5018000" />
+      <workItem from="1569029491938" duration="7492000" />
     </task>
     <task id="LOCAL-00001" summary="tiny modify">
       <created>1568630930892</created>

@@ -50,7 +50,7 @@ public class MyBatisConfig {
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(druidDataSource);
         bean.setTypeAliasesPackage("top.kracker1911.vproject.business.*.entity");
-        LogFactory.useLog4JLogging();
+        LogFactory.useSlf4jLogging();
 
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         String xmlPath = environment.getProperty("mybatis.mapperLocations");
