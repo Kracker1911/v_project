@@ -2,16 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6b48e9a8-1e2f-4d6b-bab3-f24d0549b33d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/doc/weixin_user_weixin_message.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin_message/dao/WeixinMessageMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin_message/dao/WeixinMessageMapper.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin_message/entity/WeixinMessageExample.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin_user/dao/WeixinUserMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin_user/dao/WeixinUserMapper.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin_user/entity/WeixinUser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin_user/entity/WeixinUserExample.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/log4j.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/weixin_user_weixin_message.sql" beforeDir="false" afterPath="$PROJECT_DIR$/doc/weixin_user_weixin_message.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/test/controller/ReceiveTestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/test/controller/ReceiveTestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin/controller/WeixinController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin/controller/WeixinController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin/service/IWeixinService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin/service/IWeixinService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin/service/impl/WeixinService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin/service/impl/WeixinService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin_message/dao/WeixinMessageMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin_message/dao/WeixinMessageMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin_message/dao/WeixinMessageMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin_message/dao/WeixinMessageMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin_message/entity/WeixinMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin_message/entity/WeixinMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin_message/entity/WeixinMessageExample.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/business/weixin_message/entity/WeixinMessageExample.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/config/MyBatisMapperScanConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/kracker1911/vproject/config/MyBatisMapperScanConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -39,8 +41,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="spring-beans.schema" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -130,6 +132,31 @@
       </MavenSettings>
       <method v="2" />
     </configuration>
+    <configuration name="vproject [clean:clean]" type="MavenRunConfiguration" factoryName="Maven" temporary="true">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="clean:clean" />
+              </list>
+            </option>
+            <option name="pomFileName" value="pom.xml" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
     <configuration name="vproject [mybatis-generator:generate]" type="MavenRunConfiguration" factoryName="Maven" temporary="true">
       <MavenSettings>
         <option name="myGeneralSettings" />
@@ -156,7 +183,7 @@
       <method v="2" />
     </configuration>
     <configuration name="Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <module name="vproject" />
+      <module name="v_project" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.skyable.receive.*" />
@@ -173,14 +200,16 @@
     </configuration>
     <list>
       <item itemvalue="Maven.vproject [clean]" />
-      <item itemvalue="Spring Boot.Application" />
       <item itemvalue="Maven.vproject [mybatis-generator:generate]" />
+      <item itemvalue="Spring Boot.Application" />
+      <item itemvalue="Maven.vproject [clean:clean]" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Maven.vproject [clean]" />
         <item itemvalue="Spring Boot.Application" />
         <item itemvalue="Maven.vproject [mybatis-generator:generate]" />
+        <item itemvalue="Maven.vproject [clean:clean]" />
       </list>
     </recent_temporary>
   </component>

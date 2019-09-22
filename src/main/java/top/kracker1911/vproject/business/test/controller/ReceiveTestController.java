@@ -113,7 +113,6 @@ public class ReceiveTestController {
     @ResponseBody
     @RequestMapping(value = "/status", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
     public String status(HttpServletRequest request, HttpServletResponse response){
-        System.out.println("status checked time: " + new Date().toString());
         return "";
     }
 }

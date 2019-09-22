@@ -56,6 +56,7 @@ CREATE TABLE `weixin_message` (
   `user_name` varchar(256) NOT NULL,
   `msg_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `msg_content` varchar(512) NOT NULL,
+  `yxbz` char(1) NOT NULL,
   PRIMARY KEY (`msg_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
