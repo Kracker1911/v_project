@@ -1,94 +1,133 @@
 package top.kracker1911.vproject.business.weixin.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import top.kracker1911.vproject.business.weixin.entity.WeixinSeqOpenIdRegistry;
+import top.kracker1911.vproject.business.weixin.entity.WeixinMpQRData;
+import top.kracker1911.vproject.business.weixin.service.IWeixinCacheService;
 import top.kracker1911.vproject.business.weixin.service.IWeixinService;
+import top.kracker1911.vproject.business.weixin_message.service.IWeixinMessageService;
+import top.kracker1911.vproject.constants.Constants;
+import top.kracker1911.vproject.exception.AesException;
+import top.kracker1911.vproject.util.*;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class WeixinService implements IWeixinService {
 
     private static final Logger logger = LoggerFactory.getLogger(WeixinService.class);
+    private Map<String, String> weixinTextReply = new HashMap<>();
 
-    private static Map<String, Date> QR_SEQUENCES_M_DATE_MAP = new ConcurrentHashMap<>();
-    private static Map<String, String> QR_SEQUENCES_MAC_MAP = new ConcurrentHashMap<>();
-    private static Map<String, Date> QR_SEQUENCES_R_DATE_MAP = new ConcurrentHashMap<>();
-    private static Map<String, WeixinSeqOpenIdRegistry> QR_SEQUENCES_REGISTRY_MAP = new ConcurrentHashMap<>();
+    @Autowired
+    private IWeixinCacheService weixinCacheService;
 
-    private static CleanThread cleanThread;
-
-    @Override
-    public void associateSeqOpnByEvent(String QRSequences, String QROpenId) {
-
-    }
+    @Autowired
+    private IWeixinMessageService weixinMessageService;
 
     @Override
-    public void associateOpnPersonByUploadData(String QROpenId, Integer personId) {
-
+    public String getQRUrl() {
+        String sequences = UUIDUtil.get32UUID();
+        WeixinMpQRData qrData = WeixinUtil.getMpQRData(sequences);
+        return "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=" + qrData.getTicket();
     }
 
-    //启动map延时清理
-    private void startCleaner() {
-        if (cleanThread == null || !cleanThread.isAlive()) {
-            cleanThread = new CleanThread();
-            cleanThread.start();
-        }
-    }
+    @Override
+    public String handleEventFromWeixin(InputStream requestInputStream) throws AesException {
+        String result = "";
+        if (null != requestInputStream) {
+            InputStreamReader isr = new InputStreamReader(requestInputStream);
+            BufferedReader br = new BufferedReader(isr);
+            Stream<String> lines = br.lines();
+            String incomeXmlStr = StringUtil.toString(lines.collect(Collectors.toList()));
+            Object[] objs = WeixinUtil.extract(incomeXmlStr);
+            if (objs[1] != null) {
+                String decrypt = WeixinUtil.decrypt(objs[1].toString());
+                Map<String, Object> xmlMap = XmlUtil.extractToMap(decrypt);
+                String msgType = (String) xmlMap.get(Constants.MESSAGE_TYPE);
+                System.out.println((String) xmlMap.get(Constants.EVENT_KEY));
+                System.out.println(xmlMap);
 
-    private static void cleanCacheMap() {
-        long currentMS = System.currentTimeMillis();
-
-        long rExpTimeStamp = currentMS - (2 * 60 * 60 * 1000L);//seq与reg的关联有效期2小时
-        Set<String> rKeySet = QR_SEQUENCES_R_DATE_MAP.keySet();
-        if (rKeySet.size() > 0) {
-            for (String k : rKeySet) {
-                if (QR_SEQUENCES_R_DATE_MAP.get(k).getTime() < rExpTimeStamp && QR_SEQUENCES_REGISTRY_MAP.get(k) != null) {
-                    QR_SEQUENCES_R_DATE_MAP.remove(k);
-                    QR_SEQUENCES_REGISTRY_MAP.remove(k);
-                }
-            }
-        }
-
-        long mExpTimeStamp = currentMS - (2 * 24 * 60 * 60 * 1000L);//seq与mac的关联有效期2天
-        Set<String> mKeySet = QR_SEQUENCES_M_DATE_MAP.keySet();
-        if (mKeySet.size() > 0) {
-            for (String k : mKeySet) {
-                if (QR_SEQUENCES_M_DATE_MAP.get(k).getTime() < mExpTimeStamp && QR_SEQUENCES_MAC_MAP.get(k) != null) {
-                    QR_SEQUENCES_M_DATE_MAP.remove(k);
-                    QR_SEQUENCES_MAC_MAP.remove(k);
-                }
-            }
-        }
-        logger.info("QR info cache cleaned up, now mac cache size: " + QR_SEQUENCES_M_DATE_MAP.size()
-                + ", reg cache size: " + QR_SEQUENCES_R_DATE_MAP.size());
-    }
-
-    private class CleanThread extends Thread {
-        private long emptyInterval = 5 * 60 * 60 * 1000L;
-        private long normalInterval = 2 * 60 * 60 * 1000L;
-
-        @Override
-        public void run() {
-            super.run();
-            while (true) {
-                try {
-                    if (QR_SEQUENCES_R_DATE_MAP.size() > 0 || QR_SEQUENCES_M_DATE_MAP.size() > 0) {
-                        Thread.sleep(normalInterval);
-                    } else {
-                        Thread.sleep(emptyInterval);
+                String event = (String) xmlMap.get(Constants.EVENT);
+                long currentMS = System.currentTimeMillis() / 1000L;
+                Map<String, Object> echoMsgMap = new HashMap<>();
+                echoMsgMap.put(Constants.TO_USER_NAME, xmlMap.get(Constants.FROM_USER_NAME));
+                echoMsgMap.put(Constants.FROM_USER_NAME, xmlMap.get(Constants.TO_USER_NAME));
+                echoMsgMap.put(Constants.CREATE_TIME, currentMS);
+                echoMsgMap.put(Constants.MESSAGE_TYPE, "text");
+                if ("event".equals(msgType) && xmlMap.get(Constants.EVENT_KEY) != null) {
+                    //公众号事件推送
+                    if ("subscribe".equals(event)) {
+                        // 扫描二维码订阅
+                        echoMsgMap.put(Constants.CONTENT, "欢迎参加许振涛&&孙小康的结婚典礼！");
+                        //sh02扫码注册
+                        weixinCacheService.associateSeqOpnByEvent((String) xmlMap.get(Constants.EVENT_KEY), (String) xmlMap.get(Constants.FROM_USER_NAME));
+                    } else if ("unsubscribe".equals(event)) {
+                        // 取消订阅事件
+                        echoMsgMap.put(Constants.CONTENT, "");
+                    } else if ("SCAN".equals(event)) {
+                        // 已关注扫描二维码事件
+                        echoMsgMap.put(Constants.CONTENT, "");
+                        //sh02扫码登录
+                        weixinCacheService.associateSeqOpnByEvent((String) xmlMap.get(Constants.EVENT_KEY), (String) xmlMap.get(Constants.FROM_USER_NAME));
+                    } else if ("CLICK".equals(event)) {
+                        //点击菜单按钮事件
+                        //回复文字信息
+                        String reply = this.weixinTextReply.get((String) xmlMap.get(Constants.EVENT_KEY));
+                        echoMsgMap.put(Constants.CONTENT, reply == null ? "no contents" : reply);
                     }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                    return;
+                    String echoMsgStr = WeixinUtil.mapToMsgXml(echoMsgMap);
+                    System.out.println(echoMsgStr);
+                    result = WeixinUtil.encryptMsg(echoMsgStr, "" + currentMS, WeixinUtil.getRandomStr());
+                } else if("text".equals(msgType)) {
+                    // 回复消息
+                    String content = (String) xmlMap.get(Constants.CONTENT);
+                    String openId = (String) xmlMap.get(Constants.FROM_USER_NAME);
+                    System.out.println(content);
+                    int insertRowCount = weixinMessageService.insertWeixinMessage(openId, content);
+                    if(insertRowCount > 0) {
+                        echoMsgMap.put(Constants.CONTENT, "已收到祝福，谢谢！");
+                    }else {
+                        echoMsgMap.put(Constants.CONTENT, "好像没有保存好呢，请重试一下，谢谢！");
+                    }
                 }
-                cleanCacheMap();
             }
+        }
+        return result;
+    }
+
+    @Override
+    public String createMPMenu(String appId, String appSecret) {
+        String result = WeixinUtil.createMPMenu(appId, appSecret);
+        JSONObject rObj = JSONObject.parseObject(result);
+        if(rObj != null && rObj.get("errcode") != null
+                && "0".equals(rObj.get("errcode").toString())) {
+            this.refreshTextReply();
+        }
+        return result;
+    }
+
+    private void refreshTextReply(){
+        String jsonFile = FileUtil.RESOURCE_FILE_PATH + "weixin-reply.json";
+        String jsonStr = FileUtil.readJsonFile(jsonFile);
+        JSONObject object = JSONObject.parseObject(jsonStr);
+        JSONArray textArray = object.getJSONArray("text");
+        this.weixinTextReply.clear();
+        for (Object value : textArray) {
+            JSONObject o = (JSONObject) value;
+            this.weixinTextReply.put((String) o.get("key"), (String) o.get("reply"));
         }
     }
 }

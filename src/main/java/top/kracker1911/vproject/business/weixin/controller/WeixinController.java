@@ -31,7 +31,6 @@ import java.util.stream.Stream;
 public class WeixinController {
 
     private static final Logger logger = LoggerFactory.getLogger(WeixinController.class);
-    private Map<String, String> weixinTextReply = new HashMap<>();
 
     @Autowired
     private IWeixinService weixinService;
@@ -57,6 +56,12 @@ public class WeixinController {
         }
     }
 
+    @ResponseBody
+//    @GetMapping(value = "/wx/qrurl")
+    public String getMPQRUrl(){
+        return weixinService.getQRUrl();
+    }
+
     /**
      * 开发模式下，微信公众号的消息/事件推送接口
      * 需要和验证Token的接口保持一致
@@ -68,58 +73,7 @@ public class WeixinController {
      */
     @PostMapping(value = "/wx/getEvent")
     public void getWXEventPush(HttpServletRequest request, HttpServletResponse response) throws AesException, IOException {
-        InputStream is = null;
-        InputStreamReader isr = null;
-        BufferedReader br = null;
-
-        is = request.getInputStream();
-        String result = "";
-        if (null != is) {
-            isr = new InputStreamReader(is);
-            br = new BufferedReader(isr);
-            Stream<String> lines = br.lines();
-            String incomeXmlStr = StringUtil.toString(lines.collect(Collectors.toList()));
-            Object[] objs = WeixinUtil.extract(incomeXmlStr);
-            if (objs[1] != null) {
-                String decrypt = WeixinUtil.decrypt(objs[1].toString());
-                Map<String, Object> xmlMap = XmlUtil.extractToMap(decrypt);
-                String msgType = (String) xmlMap.get(Constants.MESSAGE_TYPE);
-                System.out.println((String) xmlMap.get(Constants.EVENT_KEY));
-                System.out.println(xmlMap);
-                if ("event".equals(msgType) && xmlMap.get(Constants.EVENT_KEY) != null) {
-                    //公众号事件推送
-                    String event = (String) xmlMap.get(Constants.EVENT);
-                    long currentMS = System.currentTimeMillis() / 1000L;
-                    Map<String, Object> echoMsgMap = new HashMap<>();
-                    echoMsgMap.put(Constants.TO_USER_NAME, xmlMap.get(Constants.FROM_USER_NAME));
-                    echoMsgMap.put(Constants.FROM_USER_NAME, xmlMap.get(Constants.TO_USER_NAME));
-                    echoMsgMap.put(Constants.CREATE_TIME, currentMS);
-                    echoMsgMap.put(Constants.MESSAGE_TYPE, "text");
-                    if ("subscribe".equals(event)) {
-                        // 扫描二维码订阅
-                        echoMsgMap.put(Constants.CONTENT, "欢迎关注公众号！");
-                        //sh02扫码注册
-                        weixinService.associateSeqOpnByEvent((String) xmlMap.get(Constants.EVENT_KEY), (String) xmlMap.get(Constants.FROM_USER_NAME));
-                    } else if ("unsubscribe".equals(event)) {
-                        // 取消订阅事件
-                        echoMsgMap.put(Constants.CONTENT, "期待再次合作！");
-                    } else if ("SCAN".equals(event)) {
-                        // 已关注扫描二维码事件
-                        echoMsgMap.put(Constants.CONTENT, "欢迎回来！");
-                        //sh02扫码登录
-                        weixinService.associateSeqOpnByEvent((String) xmlMap.get(Constants.EVENT_KEY), (String) xmlMap.get(Constants.FROM_USER_NAME));
-                    } else if ("CLICK".equals(event)) {
-                        //点击菜单按钮事件
-                        //回复文字信息
-                        String reply = this.weixinTextReply.get((String) xmlMap.get(Constants.EVENT_KEY));
-                        echoMsgMap.put(Constants.CONTENT, reply == null ? "no contents" : reply);
-                    }
-                    String echoMsgStr = WeixinUtil.mapToMsgXml(echoMsgMap);
-                    System.out.println(echoMsgStr);
-                    result = WeixinUtil.encryptMsg(echoMsgStr, "" + currentMS, WeixinUtil.getRandomStr());
-                }
-            }
-        }
+        String result = weixinService.handleEventFromWeixin(request.getInputStream());
         PrintWriter writer = response.getWriter();
         writer.print(result);
         writer.flush();
@@ -141,29 +95,14 @@ public class WeixinController {
     @ResponseBody
     @GetMapping(value = "/wx/createMenu")
     public String createMPCustomMenu(@RequestParam Map<String, String> params){
+        //在微信公众号后台设置自定义菜单
         String appId = params.get("appId");
         String appSecret = params.get("appSecret");
 
         if(StringUtils.isEmpty(appId) || StringUtils.isEmpty(appSecret)){
             return "{\"errcode\":99999,\"errmsg\":\"invalid app id or app secret\"}";
         }
-        //在微信公众号后台设置自定义菜单
-        String result = WeixinUtil.createMPMenu(appId, appSecret);
-        JSONObject rObj = JSONObject.parseObject(result);
-        if(rObj != null && rObj.get("errcode") != null
-                && "0".equals(rObj.get("errcode").toString())) {
-            //更新文字回复缓存
-            String jsonFile = FileUtil.RESOURCE_FILE_PATH + "weixin-reply.json";
-            String jsonStr = FileUtil.readJsonFile(jsonFile);
-            JSONObject object = JSONObject.parseObject(jsonStr);
-            JSONArray textArray = object.getJSONArray("text");
-            this.weixinTextReply.clear();
-            for (Object value : textArray) {
-                JSONObject o = (JSONObject) value;
-                this.weixinTextReply.put((String) o.get("key"), (String) o.get("reply"));
-            }
-        }
-        return result;
+        return weixinService.createMPMenu(appId, appSecret);
     }
 
     /**

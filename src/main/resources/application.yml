@@ -7,7 +7,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/weixin_project?haracterEncoding=utf8&useSSL=true
     name: weixin_project
-    username: root
+    username: wwt
     password: 123456
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver

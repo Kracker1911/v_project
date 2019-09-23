@@ -13,7 +13,7 @@ public class MyBatisMapperScanConfig {
     public MapperScannerConfigurer mapperScannerConfigurer(){
         MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
         mapperScannerConfigurer.setSqlSessionFactoryBeanName("sqlSessionFactory");
-        mapperScannerConfigurer.setBasePackage("top.kracker1911.vproject.business.*.dao");
+        mapperScannerConfigurer.setBasePackage("top.kracker1911.vproject.business.weixin_message.dao");
         return mapperScannerConfigurer;
     }
 }
