@@ -49,7 +49,7 @@ public class MyBatisConfig {
     public SqlSessionFactory sqlSessionFactoryBean(DataSource druidDataSource){
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(druidDataSource);
-        bean.setTypeAliasesPackage("top.kracker1911.vproject.business.*.entity");
+        bean.setTypeAliasesPackage("top.kracker1911.vproject.business.entity");
         LogFactory.useSlf4jLogging();
 
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
@@ -76,4 +76,5 @@ public class MyBatisConfig {
     public DataSourceTransactionManager transactionManager(DataSource druidDataSource){
         return new DataSourceTransactionManager(druidDataSource);
     }
+
 }

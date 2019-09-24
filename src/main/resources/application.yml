@@ -5,12 +5,12 @@ spring:
   application:
     name: v-project
   datasource:
-    url: jdbc:mysql://localhost:3306/weixin_project?haracterEncoding=utf8&useSSL=true
+    url: jdbc:mysql://localhost:3306/weixin_project?characterEncoding=utf8&useSSL=true&
     name: weixin_project
     username: wwt
     password: 123456
     type: com.alibaba.druid.pool.DruidDataSource
-    driverClassName: com.mysql.jdbc.Driver
+    driverClassName: com.mysql.cj.jdbc.Driver
     filters: stat
     maxActive: 20
     initialSize: 1
@@ -25,4 +25,4 @@ spring:
     poolPreparedStatements: true
     maxOpenPreparedStatements: 20
 mybatis:
-  mapperLocations: classpath:top/kracker1911/vproject/business/*/dao/*.xml  #指定*Mapper.xml的位置
+  mapperLocations: classpath:top/kracker1911/vproject/business/dao/*.xml  #指定*Mapper.xml的位置

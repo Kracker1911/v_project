@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import top.kracker1911.vproject.constants.ErrorCode;
 import top.kracker1911.vproject.exception.AesException;
 import top.kracker1911.vproject.exception.HttpException;
-import top.kracker1911.vproject.business.weixin.entity.WeixinMpQRData;
+import top.kracker1911.vproject.business.ov.WeixinMpQRData;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
