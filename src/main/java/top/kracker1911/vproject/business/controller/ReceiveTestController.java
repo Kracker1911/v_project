@@ -113,6 +113,6 @@ public class ReceiveTestController {
     @ResponseBody
     @RequestMapping(value = "/status", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
     public String status(HttpServletRequest request, HttpServletResponse response){
-        return "";
+        return "{\"errorCode\":0, \"errMsg\":\"ok\"}";
     }
 }
