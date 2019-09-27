@@ -72,7 +72,7 @@ public class WeixinController {
     }
 
     /**
-     * 在开发模式下，查询公众号素材列表
+     * 在开发模式下，按照配置创建公众号按钮菜单
      * 接收参数：
      * appId: 与WeixinUtil中配置的appId保持一致，否则操作失败
      * appSecret: 与WeixinUtil中配置的appSecret保持一致，否则操作失败
@@ -94,6 +94,20 @@ public class WeixinController {
             return "{\"errcode\":99999,\"errmsg\":\"invalid app id or app secret\"}";
         }
         return weixinService.createMPMenu(appId, appSecret);
+    }
+
+    /**
+     * 在开发模式下，查询公众号素材列表
+     * 自定义回复文件为/resources/weixin-reply.json
+     * @param params
+     * @return
+     */
+    @ResponseBody
+    @GetMapping(value = "/wx/refreshTextReply")
+    public String refreshTextReply(@RequestParam Map<String, String> params){
+        //在微信公众号后台设置自定义菜单
+        weixinService.refreshTextReply();
+        return "{\"errorCode\":0, \"errMsg\":\"ok\"}";
     }
 
     /**

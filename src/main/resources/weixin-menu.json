@@ -1,0 +1,9 @@
+{
+  "button": [
+    {
+      "name": "关于我们",
+      "type": "click",
+      "key": "about_us"
+    }
+  ]
+}

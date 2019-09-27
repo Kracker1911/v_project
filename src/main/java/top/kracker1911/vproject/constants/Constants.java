@@ -9,4 +9,10 @@ public class Constants {
     public static String TO_USER_NAME = "ToUserName";
     public static String FROM_USER_NAME = "FromUserName";
     public static String MESSAGE_TYPE = "MsgType";
+
+    //微信公众号推送事件主键
+    public static String EVENT_SUBSCRIBE = "wx_push_event_subscribe";
+    public static String EVENT_UNSUBSCRIBE = "wx_push_event_unsubscribe";
+    public static String EVENT_SCAN = "wx_push_event_scan";
+    public static String EVENT_CLICK = "wx_push_event_click";
 }
