@@ -113,6 +113,7 @@ public class ReceiveTestController {
     @ResponseBody
     @RequestMapping(value = "/status", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
     public String status(HttpServletRequest request, HttpServletResponse response){
+        System.out.printf("/status has been called, you are breathtaking[%s]\n", new Date().toString());
         return "{\"errorCode\":0, \"errMsg\":\"ok\"}";
     }
 }
