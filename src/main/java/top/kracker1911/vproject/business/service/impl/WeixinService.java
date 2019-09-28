@@ -1,11 +1,13 @@
 package top.kracker1911.vproject.business.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import top.kracker1911.vproject.business.entity.WeixinMessage;
 import top.kracker1911.vproject.business.ov.WeixinMpQRData;
 import top.kracker1911.vproject.business.service.IWeixinService;
 import top.kracker1911.vproject.business.service.IWeixinMessageService;
@@ -16,6 +18,7 @@ import top.kracker1911.vproject.util.*;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -24,12 +27,18 @@ import java.util.stream.Stream;
 public class WeixinService implements IWeixinService {
 
     private static final Logger logger = LoggerFactory.getLogger(WeixinService.class);
-    private Map<String, String> weixinTextReply = new HashMap<>();
+    private Map<String, String> weixinTextReply;
+    private SimpleDateFormat sdf;
+    private Set<String> adminOpenIdSet;
 
     @Autowired
     private IWeixinMessageService weixinMessageService;
 
-    public WeixinService(){
+    public WeixinService() {
+        weixinTextReply = new HashMap<>();
+        sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        adminOpenIdSet = new HashSet<>();
+        adminOpenIdSet.add("o92w4v-7OU16w9_6aMiS39CLRyeQ");
         this.refreshTextReply();
     }
 
@@ -53,7 +62,6 @@ public class WeixinService implements IWeixinService {
                 String decrypt = WeixinUtil.decrypt(objs[1].toString());
                 Map<String, Object> xmlMap = XmlUtil.extractToMap(decrypt);
                 String msgType = (String) xmlMap.get(Constants.MESSAGE_TYPE);
-                System.out.println(xmlMap);
                 logger.info("receive message object: " + xmlMap.toString());
                 String event = (String) xmlMap.get(Constants.EVENT);
                 long currentMS = System.currentTimeMillis() / 1000L;
@@ -82,24 +90,94 @@ public class WeixinService implements IWeixinService {
                         String reply = this.getTextReply(Constants.EVENT_CLICK, (String) xmlMap.get(Constants.EVENT_KEY));
                         echoMsgMap.put(Constants.CONTENT, reply);
                     }
-                } else if("text".equals(msgType)) {
+                } else if ("text".equals(msgType)) {
                     // 回复消息
                     String content = (String) xmlMap.get(Constants.CONTENT);
                     String openId = (String) xmlMap.get(Constants.FROM_USER_NAME);
-                    System.out.println(content);
-                    int insertRowCount = weixinMessageService.insertWeixinMessage(openId, content);
-                    if(insertRowCount > 0) {
-                        echoMsgMap.put(Constants.CONTENT, this.getTextReply(Constants.EVENT_CLICK, "ok"));
-                    }else {
-                        echoMsgMap.put(Constants.CONTENT, this.getTextReply(Constants.EVENT_CLICK, "fail"));
+                    if (adminOpenIdSet.contains(openId) && (content.trim().length() > 0)
+                            && (content.startsWith("find:") || content.startsWith("detail:") || content.startsWith("delete:")
+                            || content.startsWith("ban:") || content.startsWith("deban:"))) {
+                        String traceId = UUIDUtil.get32UUID();
+                        String[] contentArr = content.split(":");
+                        String operation = contentArr[0];
+                        String keyWord = StringUtil.concat(Arrays.copyOfRange(contentArr, 1, contentArr.length), ":");
+                        logger.info("traceId:" + traceId + ";admin:" + openId + ";operation:" + content + ";keyWord:" + keyWord);
+                        String operationResult = "";
+                        if ("find".equals(operation)) {
+                            List<WeixinMessage> messageList = weixinMessageService.findWeixinMessageByContent(keyWord);
+                            JSONArray array = new JSONArray();
+                            for (WeixinMessage m : messageList) {
+                                JSONObject obj = new JSONObject();
+                                obj.put("msgId", m.getMsgId());
+                                obj.put("content", m.getMsgContent());
+                                obj.put("yxbz", m.getYxbz());
+                                array.add(obj);
+                            }
+                            operationResult = array.toJSONString();
+                        } else if ("detail".equals(operation)) {
+                            try {
+                                Long msgId = Long.parseLong(keyWord);
+                                WeixinMessage message = weixinMessageService.findWeixinMessageById(msgId);
+                                operationResult = JSON.toJSONString(message);
+                            } catch (NumberFormatException nfe) {
+                                operationResult = nfe.getMessage();
+                            }
+                        } else if ("ban".equals(operation)) {
+                            try {
+                                Long msgId = Long.parseLong(keyWord);
+                                operationResult = operationResult + weixinMessageService.banWeixinMessageById(msgId);
+                            } catch (NumberFormatException nfe) {
+                                operationResult = nfe.getMessage();
+                            }
+                        } else if ("deban".equals(operation)) {
+                            try {
+                                Long msgId = Long.parseLong(keyWord);
+                                operationResult = operationResult + weixinMessageService.debanWeixinMessageById(msgId);
+                            } catch (NumberFormatException nfe) {
+                                operationResult = nfe.getMessage();
+                            }
+                        } else if ("delete".equals(operation)) {
+                            try {
+                                Long msgId = Long.parseLong(keyWord);
+                                operationResult = operationResult + weixinMessageService.deleteWeixinMessageById(msgId);
+                            } catch (NumberFormatException nfe) {
+                                operationResult = nfe.getMessage();
+                            }
+                        } else {
+                            operationResult = "invalid operation";
+                        }
+                        logger.info("traceId:" + traceId + ";admin:" + openId + ";operation:" + content + ";keyWord:" + keyWord + ";operation result:" + operationResult);
+                        echoMsgMap.put(Constants.CONTENT, operationResult);
+                    } else {
+                        String sensitiveWord = SensitiveFilterUtil.filterMessage(content);
+                        String receivedMsg = openId + "[" + sdf.format(new Date()) + "]: " + content;
+                        if (content.length() > 200 || content.length() < 5) {
+                            receivedMsg = "[len]" + receivedMsg;
+                            logger.info(receivedMsg);
+                            echoMsgMap.put(Constants.CONTENT, this.getTextReply(Constants.EVENT_TEXT, "bad_length"));
+                        } else if (sensitiveWord != null && sensitiveWord.length() > 0) {
+                            receivedMsg = "[bad]" + receivedMsg;
+                            logger.info(receivedMsg);
+                            echoMsgMap.put(Constants.CONTENT, this.getTextReply(Constants.EVENT_TEXT, "bad") + "[" + sensitiveWord + "]");
+                        } else {
+                            receivedMsg = "[good]" + receivedMsg;
+                            logger.info(receivedMsg);
+                            int insertRowCount = weixinMessageService.insertWeixinMessage(openId, content);
+                            if (insertRowCount > 0) {
+                                echoMsgMap.put(Constants.CONTENT, this.getTextReply(Constants.EVENT_TEXT, "ok"));
+                            } else {
+                                echoMsgMap.put(Constants.CONTENT, this.getTextReply(Constants.EVENT_TEXT, "fail"));
+                            }
+                        }
                     }
+                } else {
+                    echoMsgMap.put(Constants.CONTENT, this.getTextReply(Constants.EVENT_DEFAULT, ""));
                 }
                 String echoMsgStr = WeixinUtil.mapToMsgXml(echoMsgMap);
-                System.out.println(echoMsgStr);
+                logger.info(echoMsgStr);
                 result = WeixinUtil.encryptMsg(echoMsgStr, "" + currentMS, WeixinUtil.getRandomStr());
             }
         }
-
         return result;
     }
 
@@ -107,7 +185,7 @@ public class WeixinService implements IWeixinService {
     public String createMPMenu(String appId, String appSecret) {
         String result = WeixinUtil.createMPMenu(appId, appSecret);
         JSONObject rObj = JSONObject.parseObject(result);
-        if(rObj != null && rObj.get("errcode") != null
+        if (rObj != null && rObj.get("errcode") != null
                 && "0".equals(rObj.get("errcode").toString())) {
             this.refreshTextReply();
         }
@@ -115,50 +193,52 @@ public class WeixinService implements IWeixinService {
     }
 
     @Override
-    public void refreshTextReply(){
+    public void refreshTextReply() {
         String jsonFile = FileUtil.RESOURCE_FILE_PATH + "weixin-reply.json";
         String jsonStr = FileUtil.readJsonFile(jsonFile);
         JSONObject object = JSONObject.parseObject(jsonStr);
-        JSONArray subArray = object.getJSONArray(Constants.EVENT_SUBSCRIBE);
-        JSONArray unsubArray = object.getJSONArray(Constants.EVENT_UNSUBSCRIBE);
-        JSONArray scanArray = object.getJSONArray(Constants.EVENT_SCAN);
-        JSONArray clickArray = object.getJSONArray(Constants.EVENT_CLICK);
-        if((subArray != null && subArray.size() > 0) || (unsubArray != null && unsubArray.size() > 0) ||
-                (scanArray != null && scanArray.size() > 0) || (clickArray != null && clickArray.size() > 0)){
-            this.weixinTextReply.clear();
-            this.putTextReply(Constants.EVENT_SUBSCRIBE, subArray);
-            this.putTextReply(Constants.EVENT_UNSUBSCRIBE, unsubArray);
-            this.putTextReply(Constants.EVENT_SCAN, scanArray);
-            this.putTextReply(Constants.EVENT_CLICK, clickArray);
+        if (object.isEmpty()) {
+            logger.info("empty config loaded, reply set not refreshed");
+            return;
         }
+        this.weixinTextReply.clear();
+        this.putTextReply(Constants.EVENT_SUBSCRIBE, object);
+        this.putTextReply(Constants.EVENT_UNSUBSCRIBE, object);
+        this.putTextReply(Constants.EVENT_SCAN, object);
+        this.putTextReply(Constants.EVENT_CLICK, object);
+        this.putTextReply(Constants.EVENT_TEXT, object);
+        this.putTextReply(Constants.EVENT_DEFAULT, object);
+        logger.info("reply set refreshed: " + this.weixinTextReply);
     }
 
-    private String putTextReply(String event, JSONArray textArray) {
-        if(event == null || event.length() <= 0 || textArray == null || textArray.size() <= 0){
-            return "";
+    private void putTextReply(String event, JSONObject mainObj) {
+        if (event == null || event.length() <= 0 || mainObj == null || mainObj.isEmpty()) {
+            return;
         }
-        StringBuilder sb = new StringBuilder();
+        JSONArray textArray = mainObj.getJSONArray(event);
+        if (textArray == null || textArray.size() <= 0) {
+            return;
+        }
         textArray.forEach(o -> {
             JSONObject obj = (JSONObject) o;
             String key = obj.getString("key");
             String reply = obj.getString("reply");
-            sb.append(this.putTextReply(event, key, reply));
+            this.putTextReply(event, key, reply);
         });
-        return sb.toString();
     }
 
     private String getTextReply(String event, String key) {
         Objects.requireNonNull(event);
-        Objects.requireNonNull(key);
+        key = key == null ? "" : key;
         String reply = weixinTextReply.get(event + "." + key);
         return reply == null ? "" : reply;
     }
 
-    private String putTextReply(String event, String key, String reply) {
+    private void putTextReply(String event, String key, String reply) {
         Objects.requireNonNull(event);
         Objects.requireNonNull(key);
         Objects.requireNonNull(reply);
-        return weixinTextReply.put(event + "." + key, reply);
+        weixinTextReply.put(event + "." + key, reply);
     }
 
 }

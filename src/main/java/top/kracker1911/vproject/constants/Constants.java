@@ -15,4 +15,6 @@ public class Constants {
     public static String EVENT_UNSUBSCRIBE = "wx_push_event_unsubscribe";
     public static String EVENT_SCAN = "wx_push_event_scan";
     public static String EVENT_CLICK = "wx_push_event_click";
+    public static String EVENT_TEXT = "wx_push_event_text";
+    public static String EVENT_DEFAULT = "wx_push_event_default";
 }
