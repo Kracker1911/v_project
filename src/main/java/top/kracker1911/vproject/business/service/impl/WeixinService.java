@@ -39,6 +39,7 @@ public class WeixinService implements IWeixinService {
         sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         adminOpenIdSet = new HashSet<>();
         adminOpenIdSet.add("o92w4v-7OU16w9_6aMiS39CLRyeQ");
+        adminOpenIdSet.add("o92w4v7F-wooT4h1yz8LM-cgszgc");
         this.refreshTextReply();
     }
 
@@ -97,6 +98,7 @@ public class WeixinService implements IWeixinService {
                     if (adminOpenIdSet.contains(openId) && (content.trim().length() > 0)
                             && (content.startsWith("find:") || content.startsWith("detail:") || content.startsWith("delete:")
                             || content.startsWith("ban:") || content.startsWith("deban:"))) {
+                        //admin操作
                         String traceId = UUIDUtil.get32UUID();
                         String[] contentArr = content.split(":");
                         String operation = contentArr[0];
@@ -105,15 +107,13 @@ public class WeixinService implements IWeixinService {
                         String operationResult = "";
                         if ("find".equals(operation)) {
                             List<WeixinMessage> messageList = weixinMessageService.findWeixinMessageByContent(keyWord);
-                            JSONArray array = new JSONArray();
+                            StringBuilder sb = new StringBuilder();
                             for (WeixinMessage m : messageList) {
-                                JSONObject obj = new JSONObject();
-                                obj.put("msgId", m.getMsgId());
-                                obj.put("content", m.getMsgContent());
-                                obj.put("yxbz", m.getYxbz());
-                                array.add(obj);
+                                sb.append(m.getMsgId()).append(",")
+                                        .append(m.getMsgContent()).append(",")
+                                        .append(m.getYxbz()).append("\n");
                             }
-                            operationResult = array.toJSONString();
+                            operationResult = sb.toString();
                         } else if ("detail".equals(operation)) {
                             try {
                                 Long msgId = Long.parseLong(keyWord);
@@ -144,7 +144,7 @@ public class WeixinService implements IWeixinService {
                                 operationResult = nfe.getMessage();
                             }
                         } else {
-                            operationResult = "invalid operation";
+                            operationResult = "invalid operation:" + operation + ";valid operataion:find,detail,ban,deban,delete;";
                         }
                         logger.info("traceId:" + traceId + ";admin:" + openId + ";operation:" + content + ";keyWord:" + keyWord + ";operation result:" + operationResult);
                         echoMsgMap.put(Constants.CONTENT, operationResult);
@@ -152,16 +152,13 @@ public class WeixinService implements IWeixinService {
                         String sensitiveWord = SensitiveFilterUtil.filterMessage(content);
                         String receivedMsg = openId + "[" + sdf.format(new Date()) + "]: " + content;
                         if (content.length() > 200 || content.length() < 5) {
-                            receivedMsg = "[len]" + receivedMsg;
-                            logger.info(receivedMsg);
+                            logger.info("[len]" + receivedMsg);
                             echoMsgMap.put(Constants.CONTENT, this.getTextReply(Constants.EVENT_TEXT, "bad_length"));
                         } else if (sensitiveWord != null && sensitiveWord.length() > 0) {
-                            receivedMsg = "[bad]" + receivedMsg;
-                            logger.info(receivedMsg);
+                            logger.info("[bad]" + receivedMsg);
                             echoMsgMap.put(Constants.CONTENT, this.getTextReply(Constants.EVENT_TEXT, "bad") + "[" + sensitiveWord + "]");
                         } else {
-                            receivedMsg = "[good]" + receivedMsg;
-                            logger.info(receivedMsg);
+                            logger.info("[good]" + receivedMsg);
                             int insertRowCount = weixinMessageService.insertWeixinMessage(openId, content);
                             if (insertRowCount > 0) {
                                 echoMsgMap.put(Constants.CONTENT, this.getTextReply(Constants.EVENT_TEXT, "ok"));

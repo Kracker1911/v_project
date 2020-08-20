@@ -2,6 +2,8 @@ package top.kracker1911.vproject.business.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +13,8 @@ import java.util.Date;
 
 @Controller
 public class ReceiveTestController {
+
+    private Logger logger = LoggerFactory.getLogger(ReceiveTestController.class);
 
     @ResponseBody
     @RequestMapping(value = "/rcv_test/query", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
@@ -113,7 +117,7 @@ public class ReceiveTestController {
     @ResponseBody
     @RequestMapping(value = "/status", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
     public String status(HttpServletRequest request, HttpServletResponse response){
-        System.out.printf("/status has been called, you are breathtaking[%s]\n", new Date().toString());
+        logger.info("/status has been called, you are breathtaking[" + new Date().toString() + "]");
         return "{\"errorCode\":0, \"errMsg\":\"ok\"}";
     }
 }
